@@ -4,10 +4,10 @@ require_once('header.php');
 <h1>TP ISEN 2013</h1>
 <h2>Scénario</h2>
 <p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place un système téléphonique interne.</p>
-<p>Vous avez à votre disposition :</p>
+<p>Vous allez devoir installer :</p>
 <ul>
-    <li>1 Serveur Ubuntu 12.04 32b</li>
-    <li>Des postes de téléphonie sur IP</li>
+    <li>Un serveur Ubuntu 12.04 32b dans le cloud</li>
+    <li>Configurer ce serveur pour faire office de serveur VoIP SIP</li>
 </ul>
 
 
@@ -30,12 +30,20 @@ Amazon
 OpenStack
 ------------------------------------------------------->
 <h2>OpenStack</h2>
-    <p>OpenStack est un ensemble de modules logiciels Open Source entièrement compatibles avec les API d'Amazon. Il est en quelque sorte la version libre d'AWS. Il est donc possible d'installer OpenStack dans un datacenter privé (au sein de votre entreprise par exemple) et d'utiliser OpenStack en remplacement d'Amazon.</p>
+    <p>OpenStack est un ensemble de modules logiciels Open Source entièrement compatibles avec les API d'Amazon. Il est en quelque sorte la version libre d'AWS. Il est donc possible d'installer OpenStack dans un datacenter privé (au sein de votre entreprise par exemple, on parle alors de Cloud Privé) ou d'utiliser un Cloud Public (OVH par exemple).</p>
     <p><a href="http://fr.wikipedia.org/wiki/OpenStack">http://fr.wikipedia.org/wiki/OpenStack</a></p>
-    
+
     <p>Quel module d'OpenStack sert à gérer les machines virtuelles (le composant responsable de la partie "compute") ?</p>
     <input id="openstack" type="text" value=""/>
     <input id="openstack_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('openstack');"/>
+
+<!------------------------------------------------------
+Création de votre machine
+------------------------------------------------------->
+<h2>Utilisation d'un cloud public</h2>
+    <p>Vous allez utiliser le cloud public d'OVH pour créer votre machine virtuelle.</p>
+    <p>Pour cela, vous allez devoir vous connecter en SSH à une machine de rebond (jumphost).</p>
+    <p>Cette machine vous permet de <i>controller</i> le cloud a travers des outils en lignes de commande, ce qui est utile lorsque vous avez a automatiser ou répéter des taches</p>
 
 <!------------------------------------------------------
 Connexion à la machine
