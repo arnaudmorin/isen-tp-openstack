@@ -38,26 +38,92 @@ OpenStack
     <input id="openstack_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('openstack');"/>
 
 <!------------------------------------------------------
-Création de votre machine
+Connexion au rebond
 ------------------------------------------------------->
 <h2>Utilisation d'un cloud public</h2>
     <p>Vous allez utiliser le cloud public d'OVH pour créer votre machine virtuelle.</p>
-    <p>Pour cela, vous allez devoir vous connecter en SSH à une machine de rebond (jumphost).</p>
-    <p>Cette machine vous permet de <i>controller</i> le cloud a travers des outils en lignes de commande, ce qui est utile lorsque vous avez a automatiser ou répéter des taches</p>
+    <p>Pour cela, vous avez deux possibilités : utiliser l'interface web <i>horizon</i> d'openstack (<a href='https://horizon.cloud.ovh.net/'>https://horizon.cloud.ovh.net/</a>) ou bien la ligne de commande. Pour des raisons de simplicités évidentes, nous allons utiliser la ligne de commande !</p>
+    <p>Pour cela, vous allez devoir vous connecter en SSH à une machine de rebond (jumphost), puis entrer dans un conteneur privé qui vous sera dédié.</p>
+    <p>Cette machine vous permet de <i>controller</i> le cloud a travers des outils en lignes de commande, ce qui est utile lorsque vous avez a automatiser ou répéter des taches.</p>
+    <p>Connectez vous au rebond (mot de passe <i>moutarde</i>) :</p>
+    <pre>
+ssh bounce@XXX.XXX.XXX.XXX
+    </pre>
+    <p>Vous êtes sur le rebond, connectez vous sur votre conteneur privé (mot de passe <i>moutarde</i>) :</p>
+    <pre>
+ssh -p 22XXX root@localhost
+    </pre>
+    <p>Bravo, vous voilà maintenant prêt à piloter OpenStack au travers des lignes de commande !</p>
+    <p>Pour info, vous trouverez les logins et mots de passes pour vous connecter à horizon dans le fichier openrc de votre espace privé</p>
+    <pre>
+cat openrc
+    </pre>
+
+    <p>Pour continuer le TP vous aurez besoin d'avoir acces aux variables qui sont dans ce fichier. Pour y avoir acces automatiquement sur votre ligne de commande, il vous faut <i>sourcer</i> le fichier :</p>
+    <pre>
+source openrc
+    </pre>
+
+<!------------------------------------------------------
+Création d'une clef SSH
+------------------------------------------------------->
+<h2>Création d'un clef SSH</h2>
+    <p>Pour vous connecter aux instances (machines virtuelles) du cloud, on utilise généralement des clefs SSH au lieu des mots de passes :</p>
+    <ul>
+        <li>c'est plus sécurisé</li>
+        <li>c'est utilisable au travers de scripts, et donc automatisable</li>
+    </ul>
+    <p>Vous allez devoir créer une clef SSH, puis l'uploader sur le cloud.</p>
+
+    <p>Quelle commande allez vous utiliser pour générer votre clef ssh ?</p>
+    <input id="clef_ssh" type="text" value=""/>
+    <input id="clef_ssh_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('clef_ssh');"/>
+
+    <p>Importez maintenant votre clef SSH dans le cloud : </p>
+    <pre>
+nova keypair-add --pub_key ~/.ssh/id_rsa.pub clef
+    </pre>
+
+    <p>Listez les clefs et vérifiez que la clef <i>clef</i> est bien présente : </p>
+    <pre>
+nova keypair-list
+    </pre>
+
+<!------------------------------------------------------
+Création d'une machine
+------------------------------------------------------->
+<h2>Création de la machine virtuelle (instance)</h2>
+    <p>Listez les images :</p>
+    <pre>
+nova image-list
+    </pre>
+
+    <p>Listez les flavors :</p>
+    <pre>
+nova flavor-list
+    </pre>
+
+    <p>Enfin bootez une image Ubuntu 12.04 de type vps-ssd-1 :</p>
+    <pre>
+nova boot --image "Ubuntu 12.04" --flavor "vps-ssd-1" --key-name "clef" nomdelamachinequevousvoulez
+    </pre>
 
 <!------------------------------------------------------
 Connexion à la machine
 ------------------------------------------------------->
 <h2>Votre machine</h2>
-    <p>Vous disposez d'une machine Ubuntu 12.04 64b, vous allez l'administrer grâce à une console à distance</p>
+    <p>Vous disposez donc maintenant d'une machine Ubuntu 12.04, vous allez l'administrer grâce à une console à distance</p>
     
     <p>Quel protocole va-t-on utiliser pour s'y connecter ?</p>
     <input id="connexion" type="text" value=""/>
     <input id="connexion_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('connexion');"/>
-    
-    <p>Vous utiliserez la clef suivante : </p>
-    <p>Linux : <a href="id_rsa.sansmotdepasse" target="_blank">id_rsa.sansmotdepasse</a></p>
-    <p>Putty : <a href="id_rsa.sansmotdepasse.ppk" target="_blank">id_rsa.sansmotdepasse.ppk</a></p>
+
+    <p>Pour vous le statut de votre machine :</p>
+    <pre>
+nova show nomdelamachinequevousvoulez
+    </pre>
+
+    <p>Allez-y, connectez vous à votre machine!</p>
 
     <p>De combien d'adresses IP dispose votre machine ?</p>
     <input id="ip" type="text" value=""/>
@@ -77,11 +143,11 @@ Asterisk
     <input id="asterisk_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('asterisk');"/>
 
 <h3>Installation</h3>
-    <p>Normalement il faudrait le <strong>compiler</strong>. Je l'ai fait pour vous ! Vous n'avez donc qu'à installer la version packagée disponible sur le launchpad suivant :</p>
-    <p><a href='https://launchpad.net/~emerginovteam/+archive/ubuntu/emerginov' target='_blank'>https://launchpad.net/~emerginovteam/+archive/ubuntu/emerginov</a></p>
+    <p>Normalement il faudrait le <strong>compiler</strong>. Je l'ai fait pour vous ! Vous n'avez donc qu'à installer la version packagée disponible depuis un launchpad (<a href='https://launchpad.net/~emerginovteam/+archive/ubuntu/emerginov' target='_blank'>https://launchpad.net/~emerginovteam/+archive/ubuntu/emerginov</a>)</p>
     
-    <p>Ajouter le dépôt :</p>
+    <p>Pour cela, ajouter le dépôt :</p>
     <pre>
+sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:emerginovteam/emerginov
 sudo apt-get update
     </pre>
@@ -107,6 +173,11 @@ sudo rasterisk -vvvvvvvvvvvvvvvv
     <p>Pour recharger la configuration depuis la console d'asterisk :</p>
     <pre>
 *CLI> core reload
+    </pre>
+
+    <p>Pour quitter la console d'asterisk :</p>
+    <pre>
+*CLI> exit
     </pre>
 
 <h2>Configuration</h2>

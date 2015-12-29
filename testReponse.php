@@ -3,8 +3,9 @@
 $answers = array(
     "amazon"    => "ec2",
     "openstack" => "nova",
+    "clef_ssh"  => "ssh-keygen",
     "connexion" => "ssh",
-    "ip"        => "3",
+    "ip"        => "2",
     "asterisk"  => "pabx",
     "asterisk2" => "status",
     "laputen"   => "netstat",
