@@ -51,7 +51,7 @@ ssh bounce@XXX.XXX.XXX.XXX
     </pre>
     <p>Vous êtes sur le rebond, connectez vous sur votre conteneur privé (mot de passe <i>moutarde</i>) :</p>
     <pre>
-ssh -p 22XXX root@localhost
+ssh -p 22X root@localhost
     </pre>
     <p>Bravo, vous voilà maintenant prêt à piloter OpenStack au travers des lignes de commande !</p>
     <p>Pour info, vous trouverez les logins et mots de passes pour vous connecter à horizon dans le fichier openrc de votre espace privé</p>
