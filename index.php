@@ -1,7 +1,7 @@
 <?php
 require_once('header.php');
 ?>
-<h1>TP ISEN 2013</h1>
+<h1>TP ISEN 2016</h1>
 <h2>Scénario</h2>
 <p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place un système téléphonique interne.</p>
 <p>Vous allez devoir installer :</p>
@@ -17,7 +17,7 @@ Amazon
 ------------------------------------------------------->
 <h2>Amazon Web Services</h2>
     <p>Amazon Web Services (AWS) est une collection de services informatiques distants (aussi appelés Services Web) fournis via internet par Amazon.com.</p>
-    <p>Lancés en juillet 2002, Amazon Web Services fournit des services en lignes à d'autres sites internet ou applications clientes. La plupart d'entre eux ne sont pas directement exposés à l'utilisateur final, mais offrent des fonctionnalités que d'autres développeurs peuvent utiliser. En juin 2007, Amazon revendiquait plus de 330 000 développeurs ayant souscrit pour l'utilisation des Amazon Web Services2.</p>
+    <p>Lancés en juillet 2002, Amazon Web Services fournit des services en lignes à d'autres sites internet ou applications clientes. La plupart d'entre eux ne sont pas directement exposés à l'utilisateur final, mais offrent des fonctionnalités que d'autres développeurs peuvent utiliser. En juin 2007, Amazon revendiquait plus de 330 000 développeurs ayant souscrit pour l'utilisation des Amazon Web Services.</p>
     <p>Les offres Amazon Web Services sont accessibles en HTTP, sur architecture REST et par le protocole SOAP. Tout est facturé en fonction de l'utilisation, avec la valeur exacte variant de services en services, ou selon la zone géographique d'appel.</p>
     <p><a href='http://fr.wikipedia.org/wiki/Amazon_Web_Services' target='_blank'></a></p>
     <p>Liste des produits AWS : <a href="http://aws.amazon.com/fr/products/">http://aws.amazon.com/fr/products/</a></p>
@@ -47,7 +47,7 @@ Connexion au rebond
     <p>Cette machine vous permet de <i>controller</i> le cloud a travers des outils en lignes de commande, ce qui est utile lorsque vous avez a automatiser ou répéter des taches.</p>
     <p>Connectez vous au rebond (mot de passe <i>moutarde</i>) :</p>
     <pre>
-ssh bounce@XXX.XXX.XXX.XXX
+ssh bounce@149.202.162.4
     </pre>
     <p>Vous êtes sur le rebond, connectez vous sur votre conteneur privé (mot de passe <i>moutarde</i>) :</p>
     <pre>
