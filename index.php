@@ -201,11 +201,11 @@ Connexion à la machine
         <li>Soit un login et une clef privée RSA</li>
     </ul>
 
-    <p>Selon vous, quelle technique va-t-on utiliser pour se connecter a la machine (clef ou password) ?</p>
+    <p>Selon vous, quelle technique va-t-on utiliser pour se connecter a la machine (password ou clef) ?</p>
     <input id="sshlogin" type="text" value=""/>
     <input id="sshlogin_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('sshlogin');"/>
 
-    <p>Où est enregistrée la clef privée sur le serveur de rebond ?</p>
+    <p>Où est enregistrée la clef privée sur le serveur de rebond (chemin complet) ?</p>
     <input id="keylocation" type="text" value=""/>
     <input id="keylocation_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('keylocation');"/>
 
@@ -230,11 +230,11 @@ Ansible
 <h2>Ansible</h2>
 <h3>Starting blocks</h3>
     <p>Ansible est un outil d'automatisation facilitant le déploiement, les gestion et la configuration des serveurs.</p>
-    <p>D'autres outils similaires éxistent : puppet, chef, saltstack, cfengine, etc.</p>
+    <p>D'autres outils similaires existent : puppet, chef, saltstack, cfengine, etc.</p>
 
     <p>Avant de procéder a l'installation d'un serveur de VoIP sur votre machine, prenez en main ansible et effectuez quelques essais.</p>
 
-    <p>Pour cela, depuis la machine de rebond, essayez cette commande en replaçant <i>ip_address</i> par l'adresse ip de votre machine (mais gardez bien la virgule après l'adresse IP !)</p>
+    <p>Pour cela, depuis la machine de rebond (vous pouvez ouvrir un second terminal si ce n'est pas déjà fait), essayez cette commande en replaçant <i>ip_address</i> par l'adresse ip de votre machine (mais gardez bien la virgule après l'adresse IP !)</p>
     <pre>
 ansible all -i ip_address, -m ping
     </pre>
@@ -264,7 +264,11 @@ ansible all -i ip_address, -m shell -a 'echo hello from $(hostname)'
 ansible-playbook -i ip_address, ansible/wtf.yaml
     </pre>
 
-    <p>Essayez la même chose mais en ajoutant de la verbosité :</p>
+    <p>Relancer la même commande</p>
+    <p>Quelle différence voyez-vous ? Essayez d'expliquer pourquoi :</p>
+    <textarea></textarea>
+
+    <p>Essayez maintenant la même chose mais en ajoutant de la verbosité :</p>
     <pre>
 ansible-playbook -i ip_address, -vvv ansible/wtf.yaml
     </pre>
@@ -301,7 +305,7 @@ ansible-playbook -i ip_address, ansible/asterisk.yaml
     <input id="asterisk2" type="text" value=""/>
     <input id="asterisk2_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('asterisk2');"/>
 
-    <p>Quelle commande utilisez-vous pour vérifier qu'Asterisk écoute bien sur les ports 5060 ?</p>
+    <p>Quelle commande utilisez-vous pour vérifier qu'Asterisk écoute bien sur le port 5060 (juste la commande, sans les options) ?</p>
     <input id="laputen" type="text" value=""/>
     <input id="laputen_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('laputen');"/>
     
