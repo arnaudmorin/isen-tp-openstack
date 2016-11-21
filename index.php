@@ -1,12 +1,12 @@
 <?php
 require_once('header.php');
 ?>
-<h1>TP ISEN 2016</h1>
+<h1>TP ISEN 2016/2017</h1>
 <h2>Scénario</h2>
 <p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place un système téléphonique interne.</p>
 <p>Vous allez devoir installer :</p>
 <ul>
-    <li>Un serveur Ubuntu 12.04 32b dans le cloud</li>
+    <li>Un serveur Ubuntu 16.04 dans le cloud</li>
     <li>Configurer ce serveur pour faire office de serveur VoIP SIP</li>
 </ul>
 
@@ -22,7 +22,7 @@ Amazon
     <p><a href='http://fr.wikipedia.org/wiki/Amazon_Web_Services' target='_blank'></a></p>
     <p>Liste des produits AWS : <a href="http://aws.amazon.com/fr/products/">http://aws.amazon.com/fr/products/</a></p>
 
-    <p>Quel service d'Amazon pourrait-on utiliser pour héberger notre serveur Ubuntu 12.04 ?</p>
+    <p>Quel service d'Amazon pourrait-on utiliser pour héberger notre serveur Ubuntu 16.04 ?</p>
     <input id="amazon" type="text" value=""/>
     <input id="amazon_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('amazon');"/>
 
@@ -41,53 +41,92 @@ OpenStack
 Connexion au rebond
 ------------------------------------------------------->
 <h2>Utilisation d'un cloud public</h2>
+<h3>Connexion a un serveur de rebond</h3>
     <p>Vous allez utiliser le cloud public d'OVH pour créer votre machine virtuelle.</p>
-    <p>Pour cela, vous avez deux possibilités : utiliser l'interface web <i>horizon</i> d'openstack (<a href='https://horizon.cloud.ovh.net/'>https://horizon.cloud.ovh.net/</a>) ou bien la ligne de commande. Pour des raisons de simplicités évidentes, nous allons utiliser la ligne de commande !</p>
-    <p>Pour cela, vous allez devoir vous connecter en SSH à une machine de rebond (jumphost), puis entrer dans un conteneur privé qui vous sera dédié.</p>
-    <p>Cette machine vous permet de <i>controller</i> le cloud a travers des outils en lignes de commande, ce qui est utile lorsque vous avez a automatiser ou répéter des taches.</p>
+    <p>Pour cela, il faut vous connecter en SSH sur un serveur de rebond qui contient tous les acces et outils necessaires.</p>
+
     <p>Connectez vous au rebond (mot de passe <i>moutarde</i>) :</p>
     <pre>
-ssh bounce@149.202.162.4
-    </pre>
-    <p>Vous êtes sur le rebond, connectez vous sur votre conteneur privé (mot de passe <i>moutarde</i>) :</p>
-    <pre>
-ssh -p 22X root@localhost
+ssh jump@jump.arnaudmorin.fr
     </pre>
     <p>Bravo, vous voilà maintenant prêt à piloter OpenStack au travers des lignes de commande !</p>
-    <p>Pour info, vous trouverez les logins et mots de passes pour vous connecter à horizon dans le fichier openrc de votre espace privé</p>
+
+<h3>HTTP, just for fun!</h3>
+    <p>Pour le fun, nous allons utiliser OpenStack en effectuant quelques requetes HTTP en ligne de commande (l'objectif caché est de vous faire comprendre que le cloud c'est avant tout des API, et que ces API sont la base de toutes les actions effectuées dans le cloud).
+    <p>Avez vous compris et êtes vous convaincus ?</p>
+    <input id="compris" type="text" value=""/>
+    <input id="compris_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('compris');"/>
+
+    <p>Pour cela nous allons utiliser la commande <i>curl</i></p>
+    <p>Pour utiliser les differents services du cloud, il vous faut un token. On peut récuperer ce token en effectuant une requête HTTP comme la suivante :</p>
     <pre>
-cat openrc
+# Get token 
+curl -s -X POST https://auth.cloud.ovh.net/v2.0/tokens \
+ -H "Content-Type: application/json" \
+ -d '{"auth": {"tenantName": "'$OS_TENANT_NAME'", "passwordCredentials": {"username": "'$OS_USERNAME'", "password": "'$OS_PASSWORD'"}}}'\
+ | j
     </pre>
 
-    <p>Pour continuer le TP vous aurez besoin d'avoir acces aux variables qui sont dans ce fichier. Pour y avoir acces automatiquement sur votre ligne de commande, il vous faut <i>sourcer</i> le fichier :</p>
+    <p>Essayez de trouver le token dans le crachat json</p>
+    <p>Puis exportez le dans une variable pour le reutiliser plus tard dans votre shell :</p>
     <pre>
-source openrc
+# Export the token so that we can reuse it as a variable
+export TOKEN=the_long_uuid_token
     </pre>
 
-<!------------------------------------------------------
-Création d'une clef SSH
-------------------------------------------------------->
-<h2>Création d'un clef SSH</h2>
-    <p>Pour vous connecter aux instances (machines virtuelles) du cloud, on utilise généralement des clefs SSH au lieu des mots de passes :</p>
-    <ul>
-        <li>c'est plus sécurisé</li>
-        <li>c'est utilisable au travers de scripts, et donc automatisable</li>
-    </ul>
-    <p>Vous allez devoir créer une clef SSH, puis l'uploader sur le cloud.</p>
-
-    <p>Quelle commande allez vous utiliser pour générer votre clef ssh ?</p>
-    <input id="clef_ssh" type="text" value=""/>
-    <input id="clef_ssh_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('clef_ssh');"/>
-
-    <p>Importez maintenant votre clef SSH dans le cloud : </p>
+    <p>Allez, grace a votre token, listez les flavors :</p>
     <pre>
-nova keypair-add --pub_key ~/.ssh/id_rsa.pub clef
+# List flavors
+curl -s -H "X-Auth-Token: $TOKEN" \
+ https://compute.gra1.cloud.ovh.net/v2/$OS_TENANT_ID/flavors \
+ | j
     </pre>
 
-    <p>Listez les clefs et vérifiez que la clef <i>clef</i> est bien présente : </p>
+    <p>Combien y-a-t-il de flavors ?</p>
+    <input id="flavors" type="text" value=""/>
+    <input id="flavors_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('flavors');"/>
+
+    <p>De même, listez les images :</p>
     <pre>
-nova keypair-list
+# List images
+curl -s -H "X-Auth-Token: $TOKEN" \
+  https://image.compute.gra1.cloud.ovh.net/v2/images \
+  | j
     </pre>
+
+    <p>Combien y-a-t-il d'image ?</p>
+    <input id="images" type="text" value=""/>
+    <input id="images_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('images');"/>
+
+    <p>Puis les servers :</p>
+    <pre>
+# List servers
+curl -s -H "X-Auth-Token: $TOKEN" \
+  https://compute.gra1.cloud.ovh.net/v2/$OS_TENANT_ID/servers \
+  | j
+    </pre>
+
+<h3>CLI openstack: less fuck, more fun</h3>
+    <p>Manipuler OpenStack au travers de requêtes HTTP, c'est bien, mais c'est surtout bien pour coder des robots, des scripts ou des logiciels.</p>
+    <p>Pour le debuggage ou la manipulation des objets d'OpenStack, le plus simple est d'utiliser les clients officiels.</p>
+    <p>Ces clients sont en fait une collection de scripts python qui font les mêmes requêtes HTTP que celles que vous avez fait dans les parties précédentes.</p>
+    <p>Un des clients python s'appelle <i>openstack</i> et est déja installé sur votre machine.</p>
+    <p>Testez l'usage du client : </p>
+    <pre>
+openstack help
+    </pre>
+
+    <p>Quelle commande allez vous utiliser pour lister les servers ?</p>
+    <input id="servers" type="text" value=""/>
+    <input id="servers_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('servers');"/>
+
+    <p>Utilisez la même commande en y ajoutant l'option <i>--debug</i> pour voir les requêtes HTTP que fait le script python</p>
+    <p>Combien de requêtes HTTP le client fait-il pour vous ?</p>
+    <input id="debug" type="text" value=""/>
+    <input id="debug_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('debug');"/>
+
+    <p>Essayez d'expliquer chacune des requêtes :</p>
+    <textarea></textarea>
 
 <!------------------------------------------------------
 Création d'une machine
@@ -95,41 +134,140 @@ Création d'une machine
 <h2>Création de la machine virtuelle (instance)</h2>
     <p>Listez les images :</p>
     <pre>
-nova image-list
+openstack image list
     </pre>
 
     <p>Listez les flavors :</p>
     <pre>
-nova flavor-list
+openstack flavor list
     </pre>
 
-    <p>Enfin bootez une image Ubuntu 12.04 de type vps-ssd-1 :</p>
+    <p>Listez les clef SSH :</p>
     <pre>
-nova boot --image "Ubuntu 12.04" --flavor "vps-ssd-1" --key-name "clef" nomdelamachinequevousvoulez
+openstack keypair list
     </pre>
+
+    <p>Listez les reseaux :</p>
+    <pre>
+openstack network list
+    </pre>
+
+    <p>Enfin bootez une image Ubuntu 16.04 de type vps-ssd-1 :</p>
+    <pre>
+# ok, bien, boot d'une VM
+openstack server create \
+ --key-name isen_nopass \
+ --nic net-id=Ext-Net \
+ --image 'Ubuntu 16.04' \
+ --flavor vps-ssd-1 \
+ --wait \
+ le-nom-de-la-machine-que-vous-voulez
+    </pre>
+
+    <p>Pour voir le statut de votre machine :</p>
+    <pre>
+openstack show le-nom-de-la-machine-que-vous-voulez
+    </pre>
+
+    <p>Vous pouvez aussi afficher les logs et la console avec les commandes suivantes :</p>
+    <pre>
+# Show console log and url
+openstack console log show le-nom-de-la-machine-que-vous-voulez
+openstack console url show le-nom-de-la-machine-que-vous-voulez
+    </pre>
+    <p>Mais vous ne pourrez pas vous connecter avec la console par ce biais car vous ne connaissez pas le mot de passe ! (et pour cause, il n'existe pas)</p>
+
 
 <!------------------------------------------------------
 Connexion à la machine
 ------------------------------------------------------->
 <h2>Votre machine</h2>
-    <p>Vous disposez donc maintenant d'une machine Ubuntu 12.04, vous allez l'administrer grâce à une console à distance</p>
+    <p>Vous disposez donc maintenant d'une machine Ubuntu 16.04, vous allez l'administrer grâce à une console à distance</p>
     
     <p>Quel protocole va-t-on utiliser pour s'y connecter ?</p>
     <input id="connexion" type="text" value=""/>
     <input id="connexion_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('connexion');"/>
 
-    <p>Pour vous le statut de votre machine :</p>
-    <pre>
-nova show nomdelamachinequevousvoulez
-    </pre>
+    <p>Généralement, avec ce protocol pour se connecter a une machine, il vous faut :</p>
+    <ul>
+        <li>Soit un login et un password</li>
+        <li>Soit un login et une clef privée RSA</li>
+    <ul>
 
-    <p>Allez-y, connectez vous à votre machine!</p>
+    <p>Selon vous, quelle technique va-t-on utiliser pour se connecter a la machine (clef ou password) ?</p>
+    <input id="sshlogin" type="text" value=""/>
+    <input id="sshlogin_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('sshlogin');"/>
 
-    <p>De combien d'adresses IP dispose votre machine ?</p>
+    <p>Où est enregistrée la clef privée sur le serveur de rebond ?</p>
+    <input id="keylocation" type="text" value=""/>
+    <input id="keylocation_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('keylocation');"/>
+
+    <p>Les images cloud Ubuntu 16.04 utilisent toutes le même login: <i>ubuntu</i></p>
+    <p>Maintenant que vous avez les informations nécessaires, allez-y, connectez vous à votre machine !</p>
+
+    <p>De combien d'adresses IPv4 dispose votre machine ?</p>
     <input id="ip" type="text" value=""/>
     <input id="ip_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('ip');"/>
 
     <p>Notez la ou les adresses IP que vous avez trouvé : </p>
+    <textarea></textarea>
+
+    <p>Installez le paquet <i>python-simplejson</i>, qui nous servira plus tard :</p>
+    <pre>
+sudo apt-get install python-simplejson
+    </pre>
+
+<!------------------------------------------------------
+Ansible
+------------------------------------------------------->
+<h2>Ansible</h2>
+<h3>Starting blocks</h3>
+    <p>Ansible est un outil d'automatisation facilitant le déploiement, les gestion et la configuration des serveurs.</p>
+    <p>D'autres outils similaires éxistent : puppet, chef, saltstack, cfengine, etc.</p>
+
+    <p>Avant de procéder a l'installation d'un serveur de VoIP sur votre machine, prenez en main ansible et effectuez quelques essais.</p>
+
+    <p>Pour cela, depuis la machine de rebond, essayez cette commande en replaçant <i>ip_address</i> par l'adresse ip de votre machine (mais gardez bien la virgule après l'adresse IP !)</p>
+    <pre>
+ansible all -i ip_address, -m ping
+    </pre>
+
+    <p>Vous devriez obtenir quelque chose du genre :</p>
+    <pre>
+167.114.232.60 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+    </pre>
+
+    <p>Vous venez de faire votre première action avec ansible, bravo !</p>
+    <p>Sans le savoir, en activant le module <i>ping</i> d'ansible, vous avez effectué une connexion SSH sur le serveur et affiché <i>pong</i> (le module ping ne fait que ça).</p>
+
+    <p>Vous pouvez aussi lancer des commandes avec le module shell :</p>
+    <pre>
+ansible all -i ip_address, -m shell -a 'echo hello from $(hostname)'
+    </pre>
+    
+<h3>Playbooks</h3>
+    <p>Les playbooks sont des collections d'instructions que vous pouvez donner a ansible pour qu'il les execute sur les serveurs distants.</p>
+    <p>Les playbooks peuvent être utilisés pour installer, configurer et maintenir la configuration du système distant.</p>
+
+    <p>Essayez d'exécuter le playbook suivant sur votre serveur :</p>
+    <pre>
+ansible-playbook -i ip_address, ansible/wtf.yaml
+    </pre>
+
+    <p>Essayez la même chose mais en ajoutant de la verbosité :</p>
+    <pre>
+ansible-playbook -i ip_address, -vvv ansible/wtf.yaml
+    </pre>
+
+    <p>Ouvrez le playbook wtf.yaml et essayez de comprendre un peu le fonctionnement.</p>
+    <p>Quel rôle est appliqué au serveur ?</p>
+    <input id="wtfrole" type="text" value=""/>
+    <input id="wtfrole_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('wtfrole');"/>
+
+    <p>Que fait le rôle ?</p>
     <textarea></textarea>
 
 <!------------------------------------------------------
@@ -143,28 +281,24 @@ Asterisk
     <input id="asterisk_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('asterisk');"/>
 
 <h3>Installation</h3>
-    <p>Normalement il faudrait le <strong>compiler</strong>. Je l'ai fait pour vous ! Vous n'avez donc qu'à installer la version packagée disponible depuis un launchpad (<a href='https://launchpad.net/~emerginovteam/+archive/ubuntu/emerginov' target='_blank'>https://launchpad.net/~emerginovteam/+archive/ubuntu/emerginov</a>)</p>
-    
-    <p>Pour cela, ajouter le dépôt :</p>
+    <p>Nous allons donc installer <i>Asterisk</i> avec <i>Ansible</i> ! Pour cela, il vous suffit d'appliquer le playbook suivant à votre serveur :</p>
     <pre>
-sudo apt-get install python-software-properties
-sudo add-apt-repository ppa:emerginovteam/emerginov
-sudo apt-get update
+ansible-playbook -i ip_address, ansible/asterisk.yaml
     </pre>
-    
-    <p>Quelle commande allez vous utiliser pour installer le paquet asterisk ?</p>
+
+    <p>Expliquer ce que fait le playbook :</p>
     <textarea></textarea>
-    
-<h3>Quelques commandes</h3>
-    <p>Si besoin, pour démarrer asterisk :</p>
-    <pre>
-sudo service asterisk start
-    </pre>
-    
-    <p>A la place de start, quelle action peut-on utiliser pour vérifier si asterisk est démarré ?</p>
+
+    <p>Vérifiez maintenant qu'asterisk est bien installé et démarré sur votre serveur</p>
+    <p>Quelle commande vous permet de vérifier que le service asterisk est démarré ?</p>
     <input id="asterisk2" type="text" value=""/>
     <input id="asterisk2_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('asterisk2');"/>
+
+    <p>Quelle commande utilisez-vous pour vérifier qu'Asterisk écoute bien sur les ports 5060 ?</p>
+    <input id="laputen" type="text" value=""/>
+    <input id="laputen_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('laputen');"/>
     
+<h3>Quelques commandes utiles pour asterisk</h3>
     <p>Pour se connecter à la console d'asterisk :</p>
     <pre>
 sudo rasterisk -vvvvvvvvvvvvvvvv
@@ -180,130 +314,11 @@ sudo rasterisk -vvvvvvvvvvvvvvvv
 *CLI> exit
     </pre>
 
-<h2>Configuration</h2>
-    <p>Création du lien symbolique pour les fichiers de démo : </p>
-    <pre>
-sudo ln -s /usr/share/asterisk/sounds/en /var/lib/asterisk/sounds/
-    </pre>
-
     <p>Les fichiers de configuration sont dans /etc/asterisk/</p>
     <pre>
 cd /etc/asterisk/
+ls
     </pre>
-    
-    Copier coller les fichiers :
-    <h3>sip.conf</h3>
-        <pre>
-[general]
-context=public
-allowoverlap=no
-udpbindaddr=0.0.0.0
-tcpenable=no
-tcpbindaddr=0.0.0.0
-transport=udp,ws
-srvlookup=no
-realm=<strong>adresse ip de votre serveur</strong>
-externip=<strong>adresse ip de votre serveur</strong>
-localnet=<strong>10.0.0.0</strong>/255.255.255.0
-
-[8000]
-secret=moutarde
-context=from-internal
-host=dynamic
-trustrpid=yes
-sendrpid=no
-type=friend
-qualify=yes
-qualifyfreq=600
-transport=udp,ws
-;encryption=yes
-dial=SIP/8000
-callerid=Chantal <8000>
-callcounter=yes
-;avpf=yes
-icesupport=yes
-directmedia=no
-
-[8001]
-secret=moutarde
-context=from-internal
-host=dynamic
-trustrpid=yes
-sendrpid=no
-type=friend
-qualify=yes
-qualifyfreq=600
-transport=udp,ws
-;encryption=yes
-dial=SIP/8001
-callerid=Martine <8001>
-callcounter=yes
-;avpf=yes
-icesupport=yes
-directmedia=no
-
-[8002]
-secret=moutarde
-context=from-internal
-host=dynamic
-trustrpid=yes
-sendrpid=no
-type=friend
-qualify=yes
-qualifyfreq=600
-transport=udp,ws
-;encryption=yes
-dial=SIP/8002
-callerid=Gertrude <8002>
-callcounter=yes
-;avpf=yes
-icesupport=yes
-directmedia=no
-        </pre>
-        
-    <h3>rtp.conf</h3>
-        <pre>
-[general]
-rtpstart=10000
-rtpend=20000
-icesupport=yes
-stunaddr=stun.ekiga.net
-        </pre>
-        
-    <h3>http.conf</h3>
-        <pre>
-[general]
-enabled=yes
-bindaddr=0.0.0.0
-        </pre>
-    
-    <h3>extensions.conf</h3>
-        <pre>
-[general]
-static=yes
-writeprotect=no
-clearglobalvars=no
-
-[from-internal]
-exten => _800X,1,Dial(SIP/${EXTEN})
-exten => _800X,n,hangup()
-
-exten => DEMO,1,Answer()
-exten => DEMO,n,Playback(demo-echotest)
-exten => DEMO,n,Record(tmp.gsm,0,10)
-exten => DEMO,n,Playback(beep)
-exten => DEMO,n,Playback(tmp)
-exten => DEMO,n,Playback(demo-echodone)
-exten => DEMO,n,Playback(demo-thanks)
-exten => DEMO,n,hangup()
-        </pre>
-
-    <p>Redémarrer asterisk (ou recharger la configuration) après chaque modification des fichiers.</p>
-    
-    <p>Quelle commande utiliser pour vérifier qu'Asterisk écoute bien sur les ports 5060 et 8088 ?</p>
-    <input id="laputen" type="text" value=""/>
-    <input id="laputen_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('laputen');"/>
-
 
 <!------------------------------------------------------
 Premier appel
@@ -319,7 +334,7 @@ Serveur SIP : ip de votre serveur
     <p><img src="images/linphone1.png"/></p>
     <p><img src="images/linphone2.png"/></p>
     
-    <p>Quel adresse SIP appeler pour tester le bon fonctionnement de notre serveur ?</p>
+    <p>Quel adresse SIP appeler pour tester le bon fonctionnement de notre serveur ? (indice : regardez dans les fichiers de configuration d'asterisk)</p>
     <input id="firstcall" type="text" value=""/>
     <input id="firstcall_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('firstcall');"/>
 
@@ -328,9 +343,8 @@ Wireshark
 ------------------------------------------------------->
 <h2>Wireshark</h2>
     <p><a href='http://fr.wikipedia.org/wiki/Wireshark' target='_blank'>http://fr.wikipedia.org/wiki/Wireshark</a></p>
-    <p>Utiliser Wireshark pour capturer une trace d'un appel entre votre client et le serveur (capture côté client).</p>
+    <p>Utiliser wireshark pour capturer une trace d'un appel entre votre client et le serveur (capture côté client).</p>
     <p>Utiliser tshark (wireshark en ligne de commande) pour capturer la trace côté serveur.</p>
-    <p>Tester aussi en désactivant STUN dans le client Linphone.</p>
     
     <p>Quel filtre applique-t-on dans wireshark pour n'afficher que les paquets SIP ?</p>
     <input id="filtrews" type="text" value=""/>
@@ -339,14 +353,6 @@ Wireshark
     <p>Quelle réponse reçoit-on à notre première requête INVITE ?</p>
     <input id="1reponse" type="text" value=""/>
     <input id="1reponse_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('1reponse');"/>
-    
-    <p>Quelle autre réponse pourrait-on attendre si l'authentification était gérée par un proxy ?</p>
-    <input id="2reponse" type="text" value=""/>
-    <input id="2reponse_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('2reponse');"/>
-    
-    <p>Les requêtes STUN apparaissent-elles avant ou après les requêtes SIP ?</p>
-    <input id="stun" type="text" value=""/>
-    <input id="stun_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('stun');"/>
     
     <p>Capturer des traces pour :</p>
     <ul>
@@ -472,54 +478,10 @@ Vrai téléphone
     
     <p><a href='ftp://downloads.aastra.com/Downloads/User_Guides/6755i_41-001386-00_REV01_UG_E_06_2013.pdf' target="_blank">ftp://downloads.aastra.com/Downloads/User_Guides/6755i_41-001386-00_REV01_UG_E_06_2013.pdf</a></p>
 
-    <p>Le téléphone ne sait pas utiliser le protocole STUN, que peut-on rajouter dans la configuration de l'user sur Asterisk pour que les paquets RTP traversent quand même le NAT ?</p>
-    <textarea></textarea>
-
 <!--
 
 Mot de passe par défaut administrateur du téléphone : 22222
 Reset du télépone possible en appuyant simultanément sur 1 et # au boot du téléphone
-    
-<!------------------------------------------------------
-WebRTC
-------------------------------------------------------->
-<!--
-<h2>WebRTC C'est quoi ?</h2>
-    <p><a href='http://fr.wikipedia.org/wiki/WebRTC' target='_blank'>http://fr.wikipedia.org/wiki/WebRTC</a></p>
-    
-    <p>Asterisk est compatible avec WebRTC, il doit donc être possible d'établir une communication entre un client SIP et un client sur navigateur web classique.</p>
-    
-    <p>Commencer par installer apache, subversion</p>
-    <pre>
-sudo apt-get install apache subversion
-    </pre>
-    
-    <h3>SIPml5</h3>
-        <p>Récupérer le code source :</p>
-        <pre>
-cd /var/www/
-sudo svn checkout http://sipml5.googlecode.com/svn/trunk/ /var/www/myphone
-sudo chown -R www-data:www-data /var/www/myphone/
-        </pre>
-        
-        <p>Désactiver les GA à la fin du fichier call.htm :</p>
-        <pre>
-cd /var/www/myphone/
-sudo vim call.htm
-        </pre>
-        
-        <p>Dans <strong>sip.conf</strong>, décommenter pour chaque utilisateur :</p>
-        <pre>
-avpf=yes
-        </pre>
-    
-    <h3>Configuration de SIPml5</h3>
-        <p><img src='images/webrtc1.png'</img></p>
-        <p><img src='images/webrtcexpert.png'</img></p>
-    
-    <p>Que signifie ws dans ws:// ?</p>
-    <input id="webrtc" type="text" value=""/>
-    <input id="webrtc_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('webrtc');"/>
 
 -->
 <?php
