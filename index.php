@@ -3,13 +3,19 @@ require_once('header.php');
 ?>
 <h1>TP ISEN 2016/2017</h1>
 <h2>Scénario</h2>
-<p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place un système téléphonique interne.</p>
+<p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place un système de téléphonie interne.</p>
 <p>Vous allez devoir installer :</p>
 <ul>
     <li>Un serveur Ubuntu 16.04 dans le cloud</li>
     <li>Configurer ce serveur pour faire office de serveur VoIP SIP</li>
 </ul>
-
+<p>Pendant ce TP, vous allez donc découvrir :</p>
+<ul>
+    <li>Les joies du Cloud OpenStack</li>
+    <li>Les API d'OpenStack -- même en ligne de commande</li>
+    <li>Ansible -- un outil de déploiement et d'automatisation vraiment super</li>
+    <li>Asterisk -- un serveur de VoIP qui sait parler le protocole SIP</li>
+</ul>
 
 
 <!------------------------------------------------------
@@ -22,7 +28,7 @@ Amazon
     <p><a href='http://fr.wikipedia.org/wiki/Amazon_Web_Services' target='_blank'></a></p>
     <p>Liste des produits AWS : <a href="http://aws.amazon.com/fr/products/">http://aws.amazon.com/fr/products/</a></p>
 
-    <p>Quel service d'Amazon pourrait-on utiliser pour héberger notre serveur Ubuntu 16.04 ?</p>
+    <p>Quel service d'Amazon pourrait-on utiliser pour créer notre serveur Ubuntu 16.04 ?</p>
     <input id="amazon" type="text" value=""/>
     <input id="amazon_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('amazon');"/>
 
@@ -67,6 +73,7 @@ curl -s -X POST https://auth.cloud.ovh.net/v2.0/tokens \
  | j
     </pre>
 
+    <p>Notez que vous n'avez nullement eu besoin de donner un login ou un mot de passe pour effectuer votre première requête HTTP au cloud. En effet, ce serveur de rebond dispose d'un accès au cloud OpenStack d'OVH grâce a une configuration et un environnement pré-installé : vous n'avez donc pas à vous soucier des logins et mots de passe.</p>
     <p>Essayez de trouver le token dans le crachat json</p>
     <p>Puis exportez le dans une variable pour le reutiliser plus tard dans votre shell :</p>
     <pre>
@@ -109,7 +116,7 @@ curl -s -H "X-Auth-Token: $TOKEN" \
 <h3>CLI openstack: less fuck, more fun</h3>
     <p>Manipuler OpenStack au travers de requêtes HTTP, c'est bien, mais c'est surtout bien pour coder des robots, des scripts ou des logiciels.</p>
     <p>Pour le debuggage ou la manipulation des objets d'OpenStack, le plus simple est d'utiliser les clients officiels.</p>
-    <p>Ces clients sont en fait une collection de scripts python qui font les mêmes requêtes HTTP que celles que vous avez fait dans les parties précédentes.</p>
+    <p>Ces clients sont en fait une collection de scripts <i>python</i> qui font les mêmes requêtes HTTP que celles que vous avez fait dans les parties précédentes.</p>
     <p>Un des clients python s'appelle <i>openstack</i> et est déja installé sur votre machine.</p>
     <p>Testez l'usage du client : </p>
     <pre>
@@ -125,7 +132,7 @@ openstack help
     <input id="debug" type="text" value=""/>
     <input id="debug_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('debug');"/>
 
-    <p>Essayez d'expliquer chacune des requêtes :</p>
+    <p>Essayez d'expliquer les requêtes que vous voyez (il peut y avoir des choses bizarres) :</p>
     <textarea></textarea>
 
 <!------------------------------------------------------
@@ -166,7 +173,7 @@ openstack server create \
 
     <p>Pour voir le statut de votre machine :</p>
     <pre>
-openstack show le-nom-de-la-machine-que-vous-voulez
+openstack server show le-nom-de-la-machine-que-vous-voulez
     </pre>
 
     <p>Vous pouvez aussi afficher les logs et la console avec les commandes suivantes :</p>
@@ -192,7 +199,7 @@ Connexion à la machine
     <ul>
         <li>Soit un login et un password</li>
         <li>Soit un login et une clef privée RSA</li>
-    <ul>
+    </ul>
 
     <p>Selon vous, quelle technique va-t-on utiliser pour se connecter a la machine (clef ou password) ?</p>
     <input id="sshlogin" type="text" value=""/>
