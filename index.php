@@ -343,7 +343,7 @@ Serveur SIP : ip de votre serveur
     </pre>
         
     <p><img src="images/linphone1.png"/></p>
-    <p><img src="images/linphone2.png"/></p>
+    <!-- <p><img src="images/linphone2.png"/></p> -->
     
     <p>Quel adresse SIP appeler pour tester le bon fonctionnement de notre serveur ? (indice : regardez dans les fichiers de configuration d'asterisk)</p>
     <input id="firstcall" type="text" value=""/>
@@ -367,23 +367,18 @@ Wireshark
     
     <p>Capturer des traces pour :</p>
     <ul>
-        <li>Un REGISTER</li>
-        <li>Un appel entre deux personnes</li>
+        <li>Un enregistrement</li>
+        <li>Un appel vers le serveur</li>
+        <li>Un désenregistrement</li>
     </ul>
     
     <p>Vérifier la cohérence des traces envers le cours.</p>
     <p>Identifier la/les transaction(s).</p>
     <p>Identifier le/les dialogue(s).</p>
     
-    <p>Combien de requête REGISTER observez vous ?</p>
+    <p>Pendant l'enregistrement, combien de requête REGISTER observez vous ?</p>
     <input id="register" type="text" value=""/>
     <input id="register_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('register');"/>
-    <p>Essayer d'expliquer pourquoi</p>
-    <textarea></textarea>
-    
-    <p>Combien de dialogues différents obtenez vous en tout (enregistrement, appel, raccrochage, ne pas tenir compte des requêtes OPTIONS) ?</p>
-    <input id="dialogue" type="text" value=""/>
-    <input id="dialogue_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('dialogue');"/>
     <p>Essayer d'expliquer pourquoi</p>
     <textarea></textarea>
     
@@ -485,10 +480,11 @@ exten => _900X,1,ConfBridge(${EXTEN})
 <!------------------------------------------------------
 Vrai téléphone
 ------------------------------------------------------->
+<!--
 <h2>Utilisation d'un téléphone SIP</h2>
     
     <p><a href='ftp://downloads.aastra.com/Downloads/User_Guides/6755i_41-001386-00_REV01_UG_E_06_2013.pdf' target="_blank">ftp://downloads.aastra.com/Downloads/User_Guides/6755i_41-001386-00_REV01_UG_E_06_2013.pdf</a></p>
-
+-->
 <!--
 
 Mot de passe par défaut administrateur du téléphone : 22222

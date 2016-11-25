@@ -20,7 +20,6 @@ $answers = array(
     "filtrews"      => "sip",
     "1reponse"      => "401",
     "register"      => "2",
-    "dialogue"      => "3",
     "debitgsm"      => "13",
     "debitpcma"     => "64",
     "gsmtc"         => "30",
