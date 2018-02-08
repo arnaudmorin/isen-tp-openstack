@@ -100,6 +100,7 @@ cat <<EOF > ~/.ssh/config
 host *
  identityfile nom_de_votre_clef
     </pre>
+    <p>Remplacer nom_de_votre_clef par la clef que vous avez cree precedement</p>
 
     <p>Donnez la commande que vous allez utiliser pour booter une instance Ubuntu 16.04 :</p>
     <textarea></textarea>
@@ -136,7 +137,7 @@ Connexion à la machine
 
     <p>Essayez de vous connecter a la machine</p>
 
-    <p>Installez le paquet <i>python-simplejson</i>, qui nous servira plus tard :</p>
+    <p>Une fois connecte, installez le paquet <i>python-simplejson</i>, qui nous servira plus tard :</p>
     <pre>
 sudo apt update
 sudo apt install python-simplejson
@@ -230,8 +231,9 @@ cd bootstrap-openstack
     <p>Suivez le tutoriel sur le github <a href='https://github.com/arnaudmorin/bootstrap-openstack'>https://github.com/arnaudmorin/bootstrap-openstack</a></p>
     <p>Vous pouvez passer la partie "Prepare your environment"</p>
 
-    <p>Si vous avez terminer, vous devez avoir un OpenStack fonctionnel</p>
+    <p>Si vous avez termine, vous devez avoir un OpenStack fonctionnel.</p>
     <p>Prouvez le en me montrant votre horizon et le boot d'une machine Ubutun 16.04 avec une adresse IP publique (sur le reseau provider).</p>
+    <p>Gardez cette machine Ubuntu 16.04, elle vous servira pour la suite</p>
 
 <!------------------------------------------------------
 Asterisk
