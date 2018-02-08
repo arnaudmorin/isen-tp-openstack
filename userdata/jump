@@ -15,6 +15,16 @@ exec &> >(log_handler)
 apt update
 apt -y purge cloud-init
 apt -y dist-upgrade
-apt -y install git python-pip python-dev python-setuptools build-essential
+apt -y install vim git python-pip python-dev python-setuptools build-essential
 pip install python-openstackclient ansible
-
+adduser --disabled-password --gecos "" jump
+echo "jump:moutarde" | chpasswd
+cat <<EOF >/home/jump/.openrc
+export OS_AUTH_URL=https://auth.cloud.ovh.net/v2.0/
+export OS_TENANT_ID=TODO
+export OS_TENANT_NAME=TODO
+export OS_USERNAME=TODO
+export OS_PASSWORD=TODO
+export OS_REGION_NAME="DE1"
+EOF
+echo '. ~/.openrc' >> /home/jump/.bashrc
