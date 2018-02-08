@@ -1,13 +1,12 @@
 <?php
 require_once('header.php');
 ?>
-<h1>TP ISEN 2016/2017</h1>
+<h1>TP ISEN 2017/2018</h1>
 <h2>Scénario</h2>
-<p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place un système de téléphonie interne.</p>
-<p>Vous allez devoir installer :</p>
+<p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place :</p>
 <ul>
-    <li>Un serveur Ubuntu 16.04 dans le cloud</li>
-    <li>Configurer ce serveur pour faire office de serveur VoIP SIP</li>
+    <li>un cloud OpenStack</li>
+    <li>un système de téléphonie Asterisk</li>
 </ul>
 <p>Pendant ce TP, vous allez donc découvrir :</p>
 <ul>
@@ -19,24 +18,10 @@ require_once('header.php');
 
 
 <!------------------------------------------------------
-Amazon
-------------------------------------------------------->
-<h2>Amazon Web Services</h2>
-    <p>Amazon Web Services (AWS) est une collection de services informatiques distants (aussi appelés Services Web) fournis via internet par Amazon.com.</p>
-    <p>Lancés en juillet 2002, Amazon Web Services fournit des services en lignes à d'autres sites internet ou applications clientes. La plupart d'entre eux ne sont pas directement exposés à l'utilisateur final, mais offrent des fonctionnalités que d'autres développeurs peuvent utiliser. En juin 2007, Amazon revendiquait plus de 330 000 développeurs ayant souscrit pour l'utilisation des Amazon Web Services.</p>
-    <p>Les offres Amazon Web Services sont accessibles en HTTP, sur architecture REST et par le protocole SOAP. Tout est facturé en fonction de l'utilisation, avec la valeur exacte variant de services en services, ou selon la zone géographique d'appel.</p>
-    <p><a href='http://fr.wikipedia.org/wiki/Amazon_Web_Services' target='_blank'></a></p>
-    <p>Liste des produits AWS : <a href="http://aws.amazon.com/fr/products/">http://aws.amazon.com/fr/products/</a></p>
-
-    <p>Quel service d'Amazon pourrait-on utiliser pour créer notre serveur Ubuntu 16.04 ?</p>
-    <input id="amazon" type="text" value=""/>
-    <input id="amazon_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('amazon');"/>
-
-<!------------------------------------------------------
 OpenStack
 ------------------------------------------------------->
 <h2>OpenStack</h2>
-    <p>OpenStack est un ensemble de modules logiciels Open Source entièrement compatibles avec les API d'Amazon. Il est en quelque sorte la version libre d'AWS. Il est donc possible d'installer OpenStack dans un datacenter privé (au sein de votre entreprise par exemple, on parle alors de Cloud Privé) ou d'utiliser un Cloud Public (OVH par exemple).</p>
+    <p>OpenStack est un ensemble de modules logiciels ecris en Python. Il est en quelque sorte un Operating System pour infrastructure cloud. En plus, c'est un logiciel libre (Open Source / sous licence Apache 2). Il est donc possible d'installer OpenStack dans un datacenter privé (au sein de votre entreprise par exemple, on parle alors de Cloud Privé) ou d'utiliser un Cloud Public (OVH par exemple).</p>
     <p><a href="http://fr.wikipedia.org/wiki/OpenStack">http://fr.wikipedia.org/wiki/OpenStack</a></p>
 
     <p>Quel module d'OpenStack sert à gérer les machines virtuelles (le composant responsable de la partie "compute") ?</p>
@@ -44,81 +29,35 @@ OpenStack
     <input id="openstack_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('openstack');"/>
 
 <!------------------------------------------------------
-Connexion au rebond
+Cloud OVH
 ------------------------------------------------------->
 <h2>Utilisation d'un cloud public</h2>
+
 <h3>Connexion a un serveur de rebond</h3>
-    <p>Vous allez utiliser le cloud public d'OVH pour créer votre machine virtuelle.</p>
-    <p>Pour cela, il faut vous connecter en SSH sur un serveur de rebond qui contient tous les acces et outils necessaires.</p>
+    <p>Vous allez utiliser le cloud public d'OVH pour créer votre cloud. Un cloud sur un cloud (inception).</p>
+    <p>Pour cela, vous pouvez vous connecter en SSH sur un serveur de rebond qui contient tous les acces et outils necessaires.</p>
 
     <p>Connectez vous au rebond (mot de passe <i>moutarde</i>) :</p>
     <pre>
 ssh jump@jump.arnaudmorin.fr
+# ou
+ssh jump@jump2.arnaudmorin.fr
     </pre>
     <p>Bravo, vous voilà maintenant prêt à piloter OpenStack au travers des lignes de commande !</p>
 
-<h3>HTTP, just for fun!</h3>
-    <p>Pour le fun, nous allons utiliser OpenStack en effectuant quelques requetes HTTP en ligne de commande (l'objectif caché est de vous faire comprendre que le cloud c'est avant tout des API, et que ces API sont la base de toutes les actions effectuées dans le cloud).
-    <p>Avez vous compris et êtes vous convaincus ?</p>
-    <input id="compris" type="text" value=""/>
-    <input id="compris_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('compris');"/>
-
-    <p>Pour cela nous allons utiliser la commande <i>curl</i></p>
-    <p>Pour utiliser les differents services du cloud, il vous faut un token. On peut récuperer ce token en effectuant une requête HTTP comme la suivante :</p>
+<h3>Connexion au cloud a travers Horizon</h3>
+    <p>Vous pouvez utiliser horizon pour vous connecter au cloud d'OVH :</p>
+    <p><a href='https://horizon.cloud.ovh.net'>https://horizon.cloud.ovh.net</a></p>
+    <p>Les logins et mot de passe sont sur votre serveur de rebond dans le fichier :</p>
     <pre>
-# Get token 
-curl -s -X POST https://auth.cloud.ovh.net/v2.0/tokens \
- -H "Content-Type: application/json" \
- -d '{"auth": {"tenantName": "'$OS_TENANT_NAME'", "passwordCredentials": {"username": "'$OS_USERNAME'", "password": "'$OS_PASSWORD'"}}}'\
- | j
+cat .openrc
     </pre>
-
-    <p>Notez que vous n'avez nullement eu besoin de donner un login ou un mot de passe pour effectuer votre première requête HTTP au cloud. En effet, ce serveur de rebond dispose d'un accès au cloud OpenStack d'OVH grâce a une configuration et un environnement pré-installé : vous n'avez donc pas à vous soucier des logins et mots de passe.</p>
-    <p>Essayez de trouver le token dans le crachat json</p>
-    <p>Puis exportez le dans une variable pour le reutiliser plus tard dans votre shell :</p>
-    <pre>
-# Export the token so that we can reuse it as a variable
-export TOKEN=the_long_uuid_token
-    </pre>
-
-    <p>Allez, grace a votre token, listez les flavors :</p>
-    <pre>
-# List flavors
-curl -s -H "X-Auth-Token: $TOKEN" \
- https://compute.gra1.cloud.ovh.net/v2/$OS_TENANT_ID/flavors \
- | j
-    </pre>
-
-    <p>Combien y-a-t-il de flavors ?</p>
-    <input id="flavors" type="text" value=""/>
-    <input id="flavors_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('flavors');"/>
-
-    <p>De même, listez les images :</p>
-    <pre>
-# List images
-curl -s -H "X-Auth-Token: $TOKEN" \
-  https://image.compute.gra1.cloud.ovh.net/v2/images \
-  | j
-    </pre>
-
-    <p>Combien y-a-t-il d'image ?</p>
-    <input id="images" type="text" value=""/>
-    <input id="images_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('images');"/>
-
-    <p>Puis les servers :</p>
-    <pre>
-# List servers
-curl -s -H "X-Auth-Token: $TOKEN" \
-  https://compute.gra1.cloud.ovh.net/v2/$OS_TENANT_ID/servers \
-  | j
-    </pre>
+    <p>Prenez un peu de temps pour jouer avec</p>
 
 <h3>CLI openstack: less fuck, more fun</h3>
-    <p>Manipuler OpenStack au travers de requêtes HTTP, c'est bien, mais c'est surtout bien pour coder des robots, des scripts ou des logiciels.</p>
-    <p>Pour le debuggage ou la manipulation des objets d'OpenStack, le plus simple est d'utiliser les clients officiels.</p>
-    <p>Ces clients sont en fait une collection de scripts <i>python</i> qui font les mêmes requêtes HTTP que celles que vous avez fait dans les parties précédentes.</p>
-    <p>Un des clients python s'appelle <i>openstack</i> et est déja installé sur votre machine.</p>
-    <p>Testez l'usage du client : </p>
+    <p>Manipuler OpenStack au travers d'horizon, c'est bien, mais c'est ce n'est pas tres pratique pour automatiser. Pour cela, rien de tel que des scripts ou des logiciels.</p>
+    <p>Heureusement, sur votre machine de rebond, un outil en CLI est deja preinstalle : <i>openstack</i></p>
+    <p>Testez l'usage de cet outil (qu'on appelle aussi client OpenStack) :</p>
     <pre>
 openstack help
     </pre>
@@ -126,14 +65,6 @@ openstack help
     <p>Quelle commande allez vous utiliser pour lister les servers ?</p>
     <input id="servers" type="text" value=""/>
     <input id="servers_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('servers');"/>
-
-    <p>Utilisez la même commande en y ajoutant l'option <i>--debug</i> pour voir les requêtes HTTP que fait le script python</p>
-    <p>Combien de requêtes HTTP le client fait-il pour vous ?</p>
-    <input id="debug" type="text" value=""/>
-    <input id="debug_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('debug');"/>
-
-    <p>Essayez d'expliquer les requêtes que vous voyez (il peut y avoir des choses bizarres) :</p>
-    <textarea></textarea>
 
 <!------------------------------------------------------
 Création d'une machine
@@ -159,28 +90,30 @@ openstack keypair list
 openstack network list
     </pre>
 
-    <p>Enfin bootez une image Ubuntu 16.04 de type vps-ssd-1 :</p>
+    <p>Creez une paire de clef et importez la dans votre openstack</p>
+    <p>Donnez la commande que vous avez utiliser pour faire cela</p>
+    <textarea></textarea>
+
+    <p>Creez aussi un petit fichier de configuration pour vous aider a vous connecter</p>
     <pre>
-# ok, bien, boot d'une VM
-openstack server create \
- --key-name isen_nopass \
- --nic net-id=Ext-Net \
- --image 'Ubuntu 16.04' \
- --flavor vps-ssd-1 \
- --wait \
- le-nom-de-la-machine-que-vous-voulez
+cat <<EOF > ~/.ssh/config
+host *
+ identityfile nom_de_votre_clef
     </pre>
+
+    <p>Donnez la commande que vous allez utiliser pour booter une instance Ubuntu 16.04 :</p>
+    <textarea></textarea>
 
     <p>Pour voir le statut de votre machine :</p>
     <pre>
-openstack server show le-nom-de-la-machine-que-vous-voulez
+openstack server show votre_machine
     </pre>
 
     <p>Vous pouvez aussi afficher les logs et la console avec les commandes suivantes :</p>
     <pre>
 # Show console log and url
-openstack console log show le-nom-de-la-machine-que-vous-voulez
-openstack console url show le-nom-de-la-machine-que-vous-voulez
+openstack console log show votre_machine
+openstack console url show votre_machine
     </pre>
     <p>Mais vous ne pourrez pas vous connecter avec la console par ce biais car vous ne connaissez pas le mot de passe ! (et pour cause, il n'existe pas)</p>
 
@@ -189,7 +122,7 @@ openstack console url show le-nom-de-la-machine-que-vous-voulez
 Connexion à la machine
 ------------------------------------------------------->
 <h2>Votre machine</h2>
-    <p>Vous disposez donc maintenant d'une machine Ubuntu 16.04, vous allez l'administrer grâce à une console à distance</p>
+    <p>Vous disposez donc maintenant d'une machine, vous allez l'administrer grâce à une console à distance</p>
     
     <p>Quel protocole va-t-on utiliser pour s'y connecter ?</p>
     <input id="connexion" type="text" value=""/>
@@ -201,27 +134,12 @@ Connexion à la machine
         <li>Soit un login et une clef privée RSA</li>
     </ul>
 
-    <p>Selon vous, quelle technique va-t-on utiliser pour se connecter a la machine (password ou clef) ?</p>
-    <input id="sshlogin" type="text" value=""/>
-    <input id="sshlogin_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('sshlogin');"/>
-
-    <p>Où est enregistrée la clef privée sur le serveur de rebond (chemin complet) ?</p>
-    <input id="keylocation" type="text" value=""/>
-    <input id="keylocation_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('keylocation');"/>
-
-    <p>Les images cloud Ubuntu 16.04 utilisent toutes le même login: <i>ubuntu</i></p>
-    <p>Maintenant que vous avez les informations nécessaires, allez-y, connectez vous à votre machine !</p>
-
-    <p>De combien d'adresses IPv4 dispose votre machine ?</p>
-    <input id="ip" type="text" value=""/>
-    <input id="ip_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('ip');"/>
-
-    <p>Notez la ou les adresses IP que vous avez trouvé : </p>
-    <textarea></textarea>
+    <p>Essayez de vous connecter a la machine</p>
 
     <p>Installez le paquet <i>python-simplejson</i>, qui nous servira plus tard :</p>
     <pre>
-sudo apt-get install python-simplejson
+sudo apt update
+sudo apt install python-simplejson
     </pre>
 
 <!------------------------------------------------------
@@ -232,11 +150,11 @@ Ansible
     <p>Ansible est un outil d'automatisation facilitant le déploiement, les gestion et la configuration des serveurs.</p>
     <p>D'autres outils similaires existent : puppet, chef, saltstack, cfengine, etc.</p>
 
-    <p>Avant de procéder a l'installation d'un serveur de VoIP sur votre machine, prenez en main ansible et effectuez quelques essais.</p>
+    <p>Avant de procéder a l'installation d'un OpenStack avec Ansible, suivez le guide qui suit pour le prendre en main.</p>
 
     <p>Pour cela, depuis la machine de rebond (vous pouvez ouvrir un second terminal si ce n'est pas déjà fait), essayez cette commande en replaçant <i>ip_address</i> par l'adresse ip de votre machine (mais gardez bien la virgule après l'adresse IP !)</p>
     <pre>
-ansible all -i ip_address, -m ping
+ansible all -i ip_address, -m ping -u ubuntu
     </pre>
 
     <p>Vous devriez obtenir quelque chose du genre :</p>
@@ -252,12 +170,17 @@ ansible all -i ip_address, -m ping
 
     <p>Vous pouvez aussi lancer des commandes avec le module shell :</p>
     <pre>
-ansible all -i ip_address, -m shell -a 'echo hello from $(hostname)'
+ansible all -i ip_address, -u ubuntu -m shell -a 'echo hello from $(hostname)'
     </pre>
     
 <h3>Playbooks</h3>
     <p>Les playbooks sont des collections d'instructions que vous pouvez donner a ansible pour qu'il les execute sur les serveurs distants.</p>
     <p>Les playbooks peuvent être utilisés pour installer, configurer et maintenir la configuration du système distant.</p>
+
+    <p>Clonez ce repo github :</p>
+    <pre>
+git clone https://github.com/arnaudmorin/isen-tp-ansible ansible
+    </pre>
 
     <p>Essayez d'exécuter le playbook suivant sur votre serveur :</p>
     <pre>
@@ -281,6 +204,35 @@ ansible-playbook -i ip_address, -vvv ansible/wtf.yaml
     <p>Que fait le rôle ?</p>
     <textarea></textarea>
 
+    <p>Vous pouvez maintenant supprimer votre machine, mais pas d'inquietudes, vous allez en creer d'autres !</p>
+
+<!------------------------------------------------------
+OpenStack
+------------------------------------------------------->
+<h2>OpenStack</h2>
+<h3>Introduction</h3>
+    <p>L'installation d'OpenStack est fastidieuse, peut etre longue et necessite parfois de debugger assez longtemps avant d'obtenir quelque chose de fonctionnel.</p>
+    <p>Pour vous aider, vous aller utiliser des playbooks ansible deja existants, qui devraient presque tout faire sauf le cafe.</p>
+    <p>Vous allez vous separer en deux equipes, chaque equipe va deployer un OpenStack, la premiere equipe a reussir aura le droit a un bonbon.</p>
+
+<h3>Installation</h3>
+    <p>Clonez ce repo :</p>
+    <pre>
+git clone https://github.com/arnaudmorin/bootstrap-openstack
+    </pre>
+
+    <p>Puis demarrer l'installation</p>
+    <pre>
+cd bootstrap-openstack
+./bootstrap.sh
+    </pre>
+
+    <p>Suivez le tutoriel sur le github <a href='https://github.com/arnaudmorin/bootstrap-openstack'>https://github.com/arnaudmorin/bootstrap-openstack</a></p>
+    <p>Vous pouvez passer la partie "Prepare your environment"</p>
+
+    <p>Si vous avez terminer, vous devez avoir un OpenStack fonctionnel</p>
+    <p>Prouvez le en me montrant votre horizon et le boot d'une machine Ubutun 16.04 avec une adresse IP publique (sur le reseau provider).</p>
+
 <!------------------------------------------------------
 Asterisk
 ------------------------------------------------------->
@@ -292,7 +244,7 @@ Asterisk
     <input id="asterisk_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('asterisk');"/>
 
 <h3>Installation</h3>
-    <p>Nous allons donc installer <i>Asterisk</i> avec <i>Ansible</i> ! Pour cela, il vous suffit d'appliquer le playbook suivant à votre serveur :</p>
+    <p>Nous allons donc installer <i>Asterisk</i> avec <i>Ansible</i> sur le serveur que vous avez booter sur votre OpenStack ! Pour cela, il vous suffit d'appliquer le playbook suivant à votre serveur :</p>
     <pre>
 ansible-playbook -i ip_address, ansible/asterisk.yaml
     </pre>

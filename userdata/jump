@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Setup logging stdout + stderr to logfile
+log_file="/var/log/postinstall.log"
+
+function log_handler {
+  while IFS='' read -r output; do
+    echo $output
+    echo "$(date) - $output" >> $log_file
+  done
+}
+
+exec &> >(log_handler)
+
+apt update
+apt -y purge cloud-init
+apt -y dist-upgrade
+apt -y install git python-pip python-dev python-setuptools build-essential
+pip install python-openstackclient ansible
+
