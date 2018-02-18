@@ -132,7 +132,7 @@ Connexion à la machine
     <p>Généralement, avec ce protocol pour se connecter a une machine, il vous faut :</p>
     <ul>
         <li>Soit un login et un password</li>
-        <li>Soit un login et une clef privée RSA</li>
+        <li>Soit un login et une clef privée</li>
     </ul>
 
     <p>Essayez de vous connecter a la machine</p>
@@ -155,7 +155,7 @@ Ansible
 
     <p>Pour cela, depuis la machine de rebond (vous pouvez ouvrir un second terminal si ce n'est pas déjà fait), essayez cette commande en replaçant <i>ip_address</i> par l'adresse ip de votre machine (mais gardez bien la virgule après l'adresse IP !)</p>
     <pre>
-ansible all -i ip_address, -m ping -u ubuntu
+ansible all -i <i>ip_address</i>, -m ping -u ubuntu
     </pre>
 
     <p>Vous devriez obtenir quelque chose du genre :</p>
