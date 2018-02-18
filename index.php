@@ -69,7 +69,7 @@ openstack help
 <!------------------------------------------------------
 Création d'une machine
 ------------------------------------------------------->
-<h2>Création de la machine virtuelle (instance)</h2>
+<h2>Création d'une instance (machine virtuelle)</h2>
     <p>Listez les images :</p>
     <pre>
 openstack image list
@@ -80,7 +80,7 @@ openstack image list
 openstack flavor list
     </pre>
 
-    <p>Listez les clef SSH :</p>
+    <p>Listez les paires de clef :</p>
     <pre>
 openstack keypair list
     </pre>
@@ -96,13 +96,13 @@ openstack network list
 
     <p>Creez aussi un petit fichier de configuration pour vous aider a vous connecter</p>
     <pre>
-cat <<EOF > ~/.ssh/config
+cat &lt;&lt;EOF &gt; ~/.ssh/config
 host *
  identityfile nom_de_votre_clef
     </pre>
     <p>Remplacer nom_de_votre_clef par la clef que vous avez cree precedement</p>
 
-    <p>Donnez la commande que vous allez utiliser pour booter une instance Ubuntu 16.04 :</p>
+    <p>Donnez la commande que vous allez utiliser pour booter une instance Ubuntu 16.04 sur le reseau <i>Ext-Net</i> :</p>
     <textarea></textarea>
 
     <p>Pour voir le statut de votre machine :</p>
