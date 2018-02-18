@@ -98,9 +98,9 @@ openstack network list
     <pre>
 cat &lt;&lt;EOF &gt; ~/.ssh/config
 host *
- identityfile nom_de_votre_clef
+ identityfile <i>nom_de_votre_clef</i>
     </pre>
-    <p>Remplacer nom_de_votre_clef par la clef que vous avez cree precedement</p>
+    <p>Remplacer <i>nom_de_votre_clef</i> par la clef que vous avez cree precedement</p>
 
     <p>Donnez la commande que vous allez utiliser pour booter une instance Ubuntu 16.04 sur le reseau <i>Ext-Net</i> :</p>
     <textarea></textarea>
