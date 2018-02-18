@@ -12,11 +12,6 @@ function log_handler {
 
 exec &> >(log_handler)
 
-apt update
-apt -y purge cloud-init
-apt -y dist-upgrade
-apt -y install vim git python-pip python-dev python-setuptools build-essential
-pip install python-openstackclient ansible
 adduser --disabled-password --gecos "" jump
 echo "jump:moutarde" | chpasswd
 cat <<EOF >/home/jump/.openrc
@@ -28,3 +23,10 @@ export OS_PASSWORD=TODO
 export OS_REGION_NAME="DE1"
 EOF
 echo '. ~/.openrc' >> /home/jump/.bashrc
+
+apt update
+apt -y dist-upgrade
+apt -y install vim git python-pip python-dev python-setuptools build-essential
+pip install --upgrade pip setuptools wheel virtualenv
+pip install python-openstackclient ansible 2>&1 || true
+apt -y purge cloud-init
