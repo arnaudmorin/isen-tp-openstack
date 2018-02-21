@@ -213,7 +213,7 @@ OpenStack
 <h3>Introduction</h3>
     <p>L'installation d'OpenStack est fastidieuse, peut etre longue et necessite parfois de debugger assez longtemps avant d'obtenir quelque chose de fonctionnel.</p>
     <p>Pour vous aider, vous aller utiliser des playbooks ansible deja existants, qui devraient presque tout faire sauf le cafe.</p>
-    <p>Vous allez vous separer en deux equipes, chaque equipe va deployer un OpenStack, la premiere equipe a reussir aura le droit a un bonbon.</p>
+    <p>Vous allez vous separer en plusieurs equipes, chaque equipe va deployer un OpenStack, la premiere equipe a reussir aura le droit a un bonbon (youpi!).</p>
 
 <h3>Installation</h3>
     <p>Clonez ce repo :</p>
