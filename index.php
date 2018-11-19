@@ -90,7 +90,7 @@ openstack network list
     </pre>
 
     <p>Creez une paire de clef et importez la dans votre openstack</p>
-    <p>Donnez la commande que vous avez utiliser pour faire cela</p>
+    <p>Donnez la commande que vous avez utilise pour faire cela</p>
     <textarea></textarea>
 
     <p>Creez aussi un petit fichier de configuration pour vous aider a vous connecter</p>
@@ -147,7 +147,7 @@ Ansible
 ------------------------------------------------------->
 <h2>Ansible</h2>
 <h3>Starting blocks</h3>
-    <p>Ansible est un outil d'automatisation facilitant le déploiement, les gestion et la configuration des serveurs.</p>
+    <p>Ansible est un outil d'automatisation facilitant le déploiement, la gestion et la configuration des serveurs.</p>
     <p>D'autres outils similaires existent : puppet, chef, saltstack, cfengine, etc.</p>
 
     <p>Avant de procéder a l'installation d'un OpenStack avec Ansible, suivez le guide qui suit pour le prendre en main.</p>
