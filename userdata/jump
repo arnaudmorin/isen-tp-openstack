@@ -26,7 +26,9 @@ echo '. ~/.openrc' >> /home/jump/.bashrc
 
 apt update
 apt -y dist-upgrade
-apt -y install vim git python-pip python-dev python-setuptools build-essential
+apt -y install vim git python-dev python-setuptools build-essential curl
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
 pip install --upgrade pip setuptools wheel virtualenv
 pip install python-openstackclient ansible 2>&1 || true
 apt -y purge cloud-init
