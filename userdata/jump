@@ -33,3 +33,4 @@ pip install --upgrade pip setuptools wheel virtualenv
 pip install python-openstackclient ansible 2>&1 || true
 opentack complete > /etc/bash_completion.d/openstack
 apt -y purge cloud-init
+echo 'done'
