@@ -98,6 +98,7 @@ openstack network list
 cat &lt;&lt;EOF &gt; ~/.ssh/config
 host *
  identityfile <i>nom_de_votre_clef</i>
+EOF
     </pre>
     <p>Remplacer <i>nom_de_votre_clef</i> par la clef que vous avez cree precedement</p>
 
