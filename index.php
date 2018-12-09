@@ -433,17 +433,20 @@ exten => _900X,1,ConfBridge(${EXTEN})
 <!------------------------------------------------------
 Vrai téléphone
 ------------------------------------------------------->
-<!--
+
 <h2>Utilisation d'un téléphone SIP</h2>
     
     <p><a href='ftp://downloads.aastra.com/Downloads/User_Guides/6755i_41-001386-00_REV01_UG_E_06_2013.pdf' target="_blank">ftp://downloads.aastra.com/Downloads/User_Guides/6755i_41-001386-00_REV01_UG_E_06_2013.pdf</a></p>
--->
+
 <!--
 
 Mot de passe par défaut administrateur du téléphone : 22222
 Reset du télépone possible en appuyant simultanément sur 1 et # au boot du téléphone
 
 -->
+
+<h2>Interconnexion de deux serveurs</h2>
+
 <?php
 require_once('footer.php');
 ?>
