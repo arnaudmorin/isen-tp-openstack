@@ -389,6 +389,11 @@ Asterisk plus loin
         <p>Quelle fonction d'Asterisk avez-vous utilisée ?</p>
         <input id="astvocal" type="text" value=""/>
         <input id="astvocal_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('astvocal');"/>
+
+    <p>Configurer Asterisk pour permettre de consulter les messages de la boite vocale en composant le 888.</p>
+        <p>Quelle fonction d'Asterisk avez-vous utilisée ?</p>
+        <input id="astvocal2" type="text" value=""/>
+        <input id="astvocal2_btn" type="button" value="Vérifier!" class="btn btn-default" onclick="javascript:testReponse('astvocal2');"/>
     
     <p>Configurer Asterisk pour permettre aux clients de rejoindre un pont téléphonique.</p>
         <p>Quelle fonction d'Asterisk avez-vous utilisée ?</p>
@@ -445,7 +450,14 @@ Reset du télépone possible en appuyant simultanément sur 1 et # au boot du t�
 
 -->
 
+<h2>Ajout d'un trunk sip pour avoir une interconnexion avec le reseau telephonique commute (RTC)</h2>
+
+A configurer dans sip.conf
+
+
 <h2>Interconnexion de deux serveurs</h2>
+
+Trouver comment interconnecter deux serveurs asterisk.
 
 <?php
 require_once('footer.php');
