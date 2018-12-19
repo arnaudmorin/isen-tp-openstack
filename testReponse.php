@@ -25,7 +25,7 @@ $answers = array(
     "gsmtc"         => "30",
     "pcmatc"        => "70",
     "astvocal"      => "voicemail",
-    "astvocal"      => "voicemailmain",
+    "astvocal2"      => "voicemailmain",
     "astpont"       => "confbridge",
     "asttransf"     => "tt",
 );
