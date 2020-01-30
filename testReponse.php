@@ -14,7 +14,7 @@ $answers = array(
     "ip"            => "2",
     "wtfrole"       => "fuck",
     "asterisk"      => "pabx",
-    "asterisk2"     => "service asterisk status",
+    "asterisk2"     => array("service asterisk status", "systemctl status asterisk"),
     "laputen"       => "netstat",
     "firstcall"     => "demo",
     "filtrews"      => "sip",
@@ -25,7 +25,7 @@ $answers = array(
     "gsmtc"         => "30",
     "pcmatc"        => "70",
     "astvocal"      => "voicemail",
-    "astvocal2"      => "voicemailmain",
+    "astvocal2"     => "voicemailmain",
     "astpont"       => "confbridge",
     "asttransf"     => "tt",
 );
@@ -37,11 +37,29 @@ $q = ( isset($_REQUEST['q']) ) ? $_REQUEST['q'] : null;
 $r = ( isset($_REQUEST['r']) ) ? $_REQUEST['r'] : null;
 
 if ($q && $r && isset($answers["$q"])){
-    if ($answers["$q"] == strtolower($r)){
-        echo "true";
+    // Cas multiple reponses possibles
+    if (is_array($answers["$q"])){
+        $found = false;
+        foreach ($answers["$q"] as $answer){
+            if ($answer == strtolower($r)){
+                $found = true;
+            }
+        }
+        if ($found) {
+            echo "true";
+        }
+        else{
+            echo "false";
+        }
     }
-    else{
-        echo "false";
+    // Cas simple
+    else {
+        if ($answers["$q"] == strtolower($r)){
+            echo "true";
+        }
+        else{
+            echo "false";
+        }
     }
 }
 else{

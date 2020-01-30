@@ -12,8 +12,24 @@ function log_handler {
 
 exec &> >(log_handler)
 
+function title.print
+{
+    local string="$1"
+    local stringw=$((77 - $(wc -L <<< "$string")))
+    echo ""
+    echo "┌──────────────────────────────────────────────────────────────────────────────┐"
+    echo -n "│ $string"
+    for i in $(seq 1 ${stringw}); do echo -n " " ; done
+    echo "│"
+    echo "└──────────────────────────────────────────────────────────────────────────────┘"
+    echo ""
+}
+
+title.print "Adding jump user"
 adduser --disabled-password --gecos "" jump
 echo "jump:moutarde" | chpasswd
+
+title.print "Configuring system"
 cat <<EOF >/home/jump/.openrc
 export OS_AUTH_URL=https://auth.cloud.ovh.net/v2.0/
 export OS_TENANT_ID=TODO
@@ -21,16 +37,32 @@ export OS_TENANT_NAME=TODO
 export OS_USERNAME=TODO
 export OS_PASSWORD=TODO
 export OS_REGION_NAME="DE1"
+export OS_IDENTITY_API_VERSION=3
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
 EOF
 echo '. ~/.openrc' >> /home/jump/.bashrc
+sed -i -r 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+systemctl restart ssh
 
-apt update
-apt -y dist-upgrade
-apt -y install vim git python-dev python-setuptools build-essential curl bash-completion
+title.print "Updating packages"
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold update
+apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold dist-upgrade
+
+title.print "Installing dependencies"
+apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install vim git python-dev python-setuptools build-essential curl bash-completion
+
+title.print "Installing pip"
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python get-pip.py
 pip install --upgrade pip setuptools wheel virtualenv
+
+title.print "Installing ansible and openstackclient"
 pip install python-openstackclient ansible 2>&1 || true
-opentack complete > /etc/bash_completion.d/openstack
-apt -y purge cloud-init
-echo 'done'
+/usr/local/bin/openstack complete > /etc/bash_completion.d/openstack
+
+title.print "Purging cloud-init"
+apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold purge cloud-init
+
+title.print "Done"

@@ -13,6 +13,7 @@ require_once('header.php');
     <li>Les joies du Cloud OpenStack</li>
     <li>Les API d'OpenStack -- même en ligne de commande</li>
     <li>Ansible -- un outil de déploiement et d'automatisation vraiment super</li>
+    <li>Git -- un outil pour gerer votre code</li>
     <li>Asterisk -- un serveur de VoIP qui sait parler le protocole SIP</li>
 </ul>
 
@@ -100,6 +101,7 @@ host *
  identityfile <i>nom_de_votre_clef</i>
 EOF</pre>
     <p>Remplacer <i>nom_de_votre_clef</i> par la clef que vous avez cree precedement</p>
+    <p>Vous aurez peut etre besoin de mettre les bons droits (600) sur votre clef (avec chmod)</p>
 
     <p>Donnez la commande que vous allez utiliser pour booter une instance Ubuntu 16.04 sur le reseau <i>Ext-Net</i> :</p>
     <textarea></textarea>
