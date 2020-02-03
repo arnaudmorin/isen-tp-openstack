@@ -232,8 +232,47 @@ OpenStack
 <h3>Introduction</h3>
     <p>Avant de commencer: <a href='https://www.arnaudmorin.fr/p10/slides/#/'>Slides d'introduction</a> </p>
     <p>L'installation d'OpenStack est fastidieuse, peut etre longue et necessite parfois de debugger assez longtemps avant d'obtenir quelque chose de fonctionnel.</p>
-    <p>Pour vous aider, vous aller utiliser des playbooks ansible deja existants, qui devraient presque tout faire sauf le cafe.</p>
-    <p>Vous allez vous separer en plusieurs equipes, chaque equipe va deployer un OpenStack, la premiere equipe a reussir aura le droit a un bonbon (youpi!).</p>
+    <p>Pour vous aider, vous aller utiliser des playbooks ansible deja existants, qui devraient presque tout faire sauf le cafe (que vous payerez au prof par contre).</p>
+    <!--<p>Vous allez vous separer en plusieurs equipes, chaque equipe va deployer un OpenStack, la premiere equipe a reussir aura le droit a un bonbon (youpi!).</p>-->
+
+<h3>Arhictecture</h3>
+    <p>L'architecture de ce que vous allez deployer est la suivante :</p>
+<pre>
+             ssh       +----------+
+you     +----------->  | deployer |
+                       +----------+
+                            |
+                        ansible (ssh)
+                            |
+
++----------+   +----------+   +----------+         +---+
+|  rabbit  |   |   nova   |   |  neutron | <-----> | V |
++----------+   +----------+   +----------+         | R |
+                                                   | a |
++----------+   +----------+   +----------+         | c |
+|  mysql   |   |  glance  |   |  compute | <-----> | k |
++----------+   +----------+   +----------+         +---+
+                                                     |
++----------+   +----------+   +----------+           |
+|  horizon |   | keystone |   | designate|           |
++----------+   +----------+   +----------+           |
+                                          Instances public access
+             |                             with /28 network block
+       HTTP API access                               |
+             |                                       |
+             +----------+----------------------------+
+                        |
+                    Internet
+
+</pre>
+
+    <p>L'objectif est de deployer un petit OpenStack complet et fonctionnel.</p>
+    <p>La machine deployer vous servira d'admin / rebond. Ansible sera installe dessus.<p>
+    <p>Chaque machine aura une adresse IP publique et sera donc accessible depuis le web.</p>
+    <p>Chaque machine sera aussi interconnectee aux autres par un reseau prive : management.</p>
+    <p>Neutron et Compute auront en plus un autre reseau : public. Ce reseau leur permettra de donner acces a internet a vos futurs instances (au travers du vRack d'OVH).</p>
+    <p>Dans le vRack d'OVH, des adresses IP publiques seront disponibles et vous serons distribuer au moment venu.</p>
+    <p></p>
 
 <h3>Installation</h3>
     <p>Clonez ce repo :</p>
