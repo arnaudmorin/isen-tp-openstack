@@ -208,7 +208,7 @@ ansible-playbook -i ip_address, -vvv ansible/wtf.yaml
 
 <h3>On your own</h3>
     <p>Maintenant que vous maitrisez ansible a la perfection, vous aller devoir ecrire votre propre playbook ansible pour pouvoir deployer une application web.</p>
-    <p>L'application que vous devez deplyer est une application python: https://github.com/arnaudmorin/demo-flask</p>
+    <p>L'application que vous devez deplyer est une application python: <a href='https://github.com/arnaudmorin/demo-flask'>https://github.com/arnaudmorin/demo-flask</a></p>
     <p>Elle ecoute par defaut sur le port 8080.</p>
     <p>Votre objectif : la deployer en tandem avec un server web en frontal (apache2 ou nginx, a votre guise) pour rediriger le port 80 vers le port 8080 de l'application</p>
     
@@ -220,9 +220,7 @@ ansible-playbook -i ip_address, -vvv ansible/wtf.yaml
           |                              |             |                             |
           |                              |             |                             |
           +------------------------------+             +-----------------------------+
-
-    </pre>
-    <p></p>
+</pre>
 
 <h3>Si vous avez fini et que vous etes sur</h3>
     <p>Vous pouvez maintenant supprimer votre machine, mais pas d'inquietudes, vous allez en creer d'autres !</p>
@@ -232,7 +230,7 @@ OpenStack
 ------------------------------------------------------->
 <h2>OpenStack</h2>
 <h3>Introduction</h3>
-    <p>Avant de commencer: https://www.arnaudmorin.fr/p10/slides/#/ </p>
+    <p>Avant de commencer: <a href='https://www.arnaudmorin.fr/p10/slides/#/'>Slides d'introduction</a> </p>
     <p>L'installation d'OpenStack est fastidieuse, peut etre longue et necessite parfois de debugger assez longtemps avant d'obtenir quelque chose de fonctionnel.</p>
     <p>Pour vous aider, vous aller utiliser des playbooks ansible deja existants, qui devraient presque tout faire sauf le cafe.</p>
     <p>Vous allez vous separer en plusieurs equipes, chaque equipe va deployer un OpenStack, la premiere equipe a reussir aura le droit a un bonbon (youpi!).</p>
