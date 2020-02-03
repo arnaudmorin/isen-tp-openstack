@@ -31,7 +31,7 @@ echo "jump:moutarde" | chpasswd
 
 title.print "Configuring system"
 cat <<EOF >/home/jump/.openrc
-export OS_AUTH_URL=https://auth.cloud.ovh.net/v2.0/
+export OS_AUTH_URL=https://auth.cloud.ovh.net/
 export OS_TENANT_ID=TODO
 export OS_TENANT_NAME=TODO
 export OS_USERNAME=TODO
@@ -51,7 +51,7 @@ apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold
 apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold dist-upgrade
 
 title.print "Installing dependencies"
-apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install vim git python-dev python-setuptools build-essential curl bash-completion
+apt-get -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold install vim git python-dev python-setuptools build-essential curl bash-completion mosh
 
 title.print "Installing pip"
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
