@@ -1,7 +1,7 @@
 <?php
 require_once('header.php');
 ?>
-<h1>TP ISEN 2017/2018</h1>
+<h1>TP ISEN</h1>
 <h2>Scénario</h2>
 <p>Vous êtes responsable technique d'une entreprise et vous devez mettre en place :</p>
 <ul>
