@@ -40,7 +40,7 @@ Cloud OVH
 
     <p>Connectez vous au rebond (mot de passe <i>moutarde</i>) :</p>
     <pre>
-# Remplacer x par un chiffre entre 1 et 6
+# Remplacer x par un chiffre entre 1 et 9
 ssh jump@jump<i>x</i>.arnaudmorin.fr
     </pre>
     <p>Bravo, vous voilà maintenant prêt à piloter OpenStack au travers des lignes de commande !</p>
